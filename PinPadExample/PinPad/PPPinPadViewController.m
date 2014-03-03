@@ -49,7 +49,7 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
         self.view.backgroundColor = self.backgroundColor;
     }
     
-    
+    [self updateFonts];    
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,6 +62,24 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
 - (void) setCancelButtonHidden:(BOOL)cancelButtonHidden{
     _cancelButtonHidden = cancelButtonHidden;
     cancelButton.hidden = cancelButtonHidden;
+}
+
+- (void)setMainFont:(UIFont *)mainFont {
+    _mainFont = mainFont;
+}
+
+- (void)updateFonts {
+    pinLabel.font = [self.mainFont fontWithSize:17.f];
+    
+    UIFont *buttonsFont = [self.mainFont fontWithSize:24.f];
+    for (UIView *view in numPadView.subviews) {
+        if ([view isKindOfClass:[UIButton class]]) {
+            ((UIButton *) view).titleLabel.font = buttonsFont;
+        }
+    }
+    
+    resetButton.titleLabel.font = [self.mainFont fontWithSize:15.f];
+    cancelButton.titleLabel.font = [self.mainFont fontWithSize:15.f];
 }
 
 - (void) setErrorTitle:(NSString *)errorTitle{

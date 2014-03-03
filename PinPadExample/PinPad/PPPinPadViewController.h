@@ -25,6 +25,7 @@
     __weak IBOutlet UIView *_errorView;
     __weak IBOutlet UILabel *pinLabel;
     __weak IBOutlet UILabel *pinErrorLabel;
+    __weak IBOutlet UIView *numPadView;
     __weak IBOutlet UIImageView *backgroundImageView;
     __weak IBOutlet UIButton *resetButton;
     __weak IBOutlet UIButton *cancelButton;
@@ -34,6 +35,7 @@
 
 @property (nonatomic,assign) id<PinPadPasswordProtocol> delegate;
 
+@property (nonatomic, strong) IBOutlet UIFont *mainFont;
 @property (nonatomic, strong) NSString *errorTitle;
 @property (nonatomic, strong) NSString *pinTitle;
 @property (nonatomic, assign) BOOL cancelButtonHidden;
