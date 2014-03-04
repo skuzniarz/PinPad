@@ -36,9 +36,12 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
     [super viewDidLoad];
     [self addCircles];
 	
-    pinLabel.text = self.pinTitle ? :@"Enter PIN";
-    pinErrorLabel.text = self.errorTitle ? : @"PIN number is not correct";
+    pinLabel.text = self.pinTitle ?: @"Enter PIN";
+    pinErrorLabel.text = self.errorTitle ?: @"PIN number is not correct";
+    [cancelButton setTitle:(self.cancelTitle ?: @"Cancel") forState:UIControlStateNormal];
+    NSLog(@"%@ %@", cancelButton, self.cancelTitle);
     cancelButton.hidden = self.cancelButtonHidden;
+    [resetButton setTitle:(self.resetTitle ?: @"Reset") forState:UIControlStateNormal];
     if (self.backgroundImage) {
         backgroundImageView.hidden = NO;
         backgroundImageView.image = self.backgroundImage;
@@ -49,7 +52,7 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
         self.view.backgroundColor = self.backgroundColor;
     }
     
-    [self updateFonts];    
+    [self updateFonts];
 }
 
 - (void)didReceiveMemoryWarning

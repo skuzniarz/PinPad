@@ -38,6 +38,8 @@
 @property (nonatomic, strong) IBOutlet UIFont *mainFont;
 @property (nonatomic, strong) NSString *errorTitle;
 @property (nonatomic, strong) NSString *pinTitle;
+@property (nonatomic, strong) NSString *cancelTitle;
+@property (nonatomic, strong) NSString *resetTitle;
 @property (nonatomic, assign) BOOL cancelButtonHidden;
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, strong) UIColor *backgroundColor;
