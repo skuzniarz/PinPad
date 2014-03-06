@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Aleks Kosylo. All rights reserved.
 //
 
+#import <AudioToolbox/AudioToolbox.h>
+
 #import "PPPinPadViewController.h"
 #import "PPPinCircleView.h"
 
@@ -39,7 +41,6 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
     pinLabel.text = self.pinTitle ?: @"Enter PIN";
     pinErrorLabel.text = self.errorTitle ?: @"PIN number is not correct";
     [cancelButton setTitle:(self.cancelTitle ?: @"Cancel") forState:UIControlStateNormal];
-    NSLog(@"%@ %@", cancelButton, self.cancelTitle);
     cancelButton.hidden = self.cancelButtonHidden;
     [resetButton setTitle:(self.resetTitle ?: @"Reset") forState:UIControlStateNormal];
     if (self.backgroundImage) {
@@ -60,7 +61,6 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (void) setCancelButtonHidden:(BOOL)cancelButtonHidden{
     _cancelButtonHidden = cancelButtonHidden;
@@ -145,7 +145,7 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
 }
 
 - (IBAction)resetClick:(id)sender {
-    [self addCircles];
+    [self clearCircles];
     _inputPin = [NSMutableString string];
 }
 
@@ -159,15 +159,17 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
     if(!_errorView.hidden) {
         [self changeStatusBarHidden:YES];
     }
-    
+        
     [_inputPin appendString:[((UIButton*)sender) titleForState:UIControlStateNormal]];
     [self fillingCircle:_inputPin.length - 1];
     
+    AudioServicesPlaySystemSound(0x450);
+
     if ([self pinLenght] == _inputPin.length && [self checkPin:_inputPin]) {
         double delayInSeconds = 0.3;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            NSLog(@"Correct pin");
+            // NSLog(@"Correct pin");
             [self resetClick:nil];
             if (self.delegate && [self.delegate respondsToSelector:@selector(pinPadSuccessPin)]) {
                 [self.delegate pinPadSuccessPin];
@@ -181,7 +183,7 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
         _shakes = 0;
         [self shakeCircles:_pinCirclesView];
         [self changeStatusBarHidden:NO];
-        NSLog(@"Not correct pin");
+        // NSLog(@"Not correct pin");
     }
 }
 
@@ -241,6 +243,12 @@ static  CGFloat kVTPinPadViewControllerCircleRadius = 6.0f;
         return;
     PPPinCircleView *circleView = [_circleViewList objectAtIndex:symbolIndex];
     circleView.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)clearCircles {
+    for (PPPinCircleView *pinCircleView in _circleViewList) {
+        pinCircleView.backgroundColor = [UIColor clearColor];
+    }
 }
 
 -(void)shakeCircles:(UIView *)theOneYouWannaShake
